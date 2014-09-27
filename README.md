@@ -1,7 +1,8 @@
 # ring
 --
-    import "git.sky/shenzhen/ring"
+    import "github.com/zfjagann/golang-ring"
 
+Package ring provides a simple implementation of a ring buffer.
 
 ## Usage
 
