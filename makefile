@@ -3,6 +3,7 @@
 ring: test doc
 
 test:
+	go fmt
 	go test -v
 
 doc:
