@@ -42,7 +42,7 @@ func (r *Ring) Enqueue(i interface{}) {
 	r.checkInit()
 	r.set(r.head+1, i)
 	old := r.head
-	r.head = r.mod(r.head+1)
+	r.head = r.mod(r.head + 1)
 	if old != -1 && r.head == r.tail {
 		r.tail = r.mod(r.tail + 1)
 	}
@@ -92,7 +92,7 @@ func (r *Ring) Values() []interface{} {
 	}
 	arr := make([]interface{}, 0, r.Capacity())
 	for i := 0; i < r.Capacity(); i++ {
-		idx := r.mod(i+r.tail)
+		idx := r.mod(i + r.tail)
 		arr = append(arr, r.get(idx))
 		if idx == r.head {
 			break
