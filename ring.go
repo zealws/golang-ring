@@ -1,3 +1,6 @@
+/*
+Package ring provides a simple implementation of a ring buffer.
+*/
 package ring
 
 /*
