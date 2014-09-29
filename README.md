@@ -1,6 +1,6 @@
 # ring
 
-[![GoDoc](https://godoc.org/github.com/zfjagann/golang-ring?status.svg)](https://godoc.org/zfjagann/golang-ring)
+[![GoDoc](https://godoc.org/github.com/zfjagann/golang-ring?status.svg)](https://godoc.org/github.com/zfjagann/golang-ring)
 
 --
     import "github.com/zfjagann/golang-ring"
