@@ -7,4 +7,4 @@ test:
 	go test -v
 
 doc:
-	godocdown > README.md
+	PATH=$$PATH:$$GOPATH/bin godocdown > README.md

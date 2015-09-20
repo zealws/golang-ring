@@ -1,9 +1,6 @@
 # ring
-
-[![GoDoc](https://godoc.org/github.com/zfjagann/golang-ring?status.svg)](https://godoc.org/github.com/zfjagann/golang-ring)
-
 --
-    import "github.com/zfjagann/golang-ring"
+    import "github.com/RomanSaveljev/golang-ring"
 
 Package ring provides a simple implementation of a ring buffer.
 
@@ -48,6 +45,13 @@ Returns nil if the ring buffer is empty.
 func (r *Ring) Enqueue(i interface{})
 ```
 Enqueue a value into the Ring buffer.
+
+#### func (*Ring) Length
+
+```go
+func (r *Ring) Length() int
+```
+Returns the length of the used part of the buffer
 
 #### func (*Ring) Peek
 

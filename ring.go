@@ -101,6 +101,24 @@ func (r *Ring) Values() []interface{} {
 	return arr
 }
 
+/*
+Returns the length of the used part of the buffer
+*/
+func (r *Ring) Length() int {
+	if r.Capacity() == 0 {
+		return 0
+	}
+	if r.head == -1 {
+		return 0
+	}
+	var correctedHead int64 = int64(r.head)
+	var correctedTail int64 = int64(r.tail)
+	if correctedTail > correctedHead {
+		correctedHead += int64(r.Capacity())
+	}
+	return int(correctedHead - correctedTail + 1)
+}
+
 /**
 *** Unexported methods beyond this point.
 **/
