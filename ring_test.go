@@ -114,3 +114,73 @@ func TestConstructsArr(t *testing.T) {
 		}
 	}
 }
+
+func TestHollowBufferLength(t *testing.T) {
+	r := Ring{}
+	if r.Length() != 0 {
+		t.Fatal("Length expected to be 0, was ", r.Length())
+	}
+}
+
+func TestEmptyBufferLength(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(1)
+	if r.Length() != 0 {
+		t.Fatal("Length expected to be 0, was ", r.Length())
+	}
+}
+
+func TestOneElementBufferLength(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(2)
+	r.Enqueue(5)
+	if r.Length() != 1 {
+		t.Fatal("Length expected to be 1, was ", r.Length())
+	}
+}
+
+func TestFullBufferLength(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(2)
+	r.Enqueue(5)
+	r.Enqueue(6)
+	if r.Length() != 2 {
+		t.Fatal("Length expected to be 2, was ", r.Length())
+	}
+}
+
+func TestRolledOverBufferLength(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(2)
+	r.Enqueue(5)
+	r.Enqueue(6)
+	r.Enqueue(7)
+	if r.Length() != 2 {
+		t.Fatal("Length expected to be 2, was ", r.Length())
+	}
+}
+
+func TestRollOverAndFillLength(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(2)
+	r.Enqueue(5)
+	r.Enqueue(6)
+	r.Enqueue(7)
+	r.Enqueue(8)
+	if r.Length() != 2 {
+		t.Fatal("Length expected to be 2, was ", r.Length())
+	}
+}
+
+func TestDequeReducesLength(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(3)
+	r.Enqueue(5)
+	r.Enqueue(6)
+	r.Enqueue(7)
+	r.Enqueue(8)
+	r.Dequeue()
+	if r.Length() != 2 {
+		t.Fatal("Length expected to be 2, was ", r.Length())
+	}
+}
