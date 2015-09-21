@@ -111,12 +111,11 @@ func (r *Ring) Length() int {
 	if r.head == -1 {
 		return 0
 	}
-	var correctedHead int64 = int64(r.head)
-	var correctedTail int64 = int64(r.tail)
-	if correctedTail > correctedHead {
-		correctedHead += int64(r.Capacity())
+	if r.tail > r.head {
+		return r.head - r.tail + r.Capacity() + 1
+	} else {
+		return r.head - r.tail + 1
 	}
-	return int(correctedHead - correctedTail + 1)
 }
 
 /**
