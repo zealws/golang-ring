@@ -36,6 +36,21 @@ func (r Ring) Capacity() int {
 }
 
 /*
+ContentSize returns the current number of elements inside the ring buffer.
+*/
+func (r *Ring) ContentSize() int {
+	if r.head == -1 {
+		return 0
+	} else {
+		difference := (r.head - r.tail)
+		if difference < 0 {
+			difference = -difference
+		}
+		return difference + 1
+	}
+}
+
+/*
 Enqueue a value into the Ring buffer.
 */
 func (r *Ring) Enqueue(i interface{}) {
