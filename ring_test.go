@@ -1,7 +1,7 @@
 package ring
 
 import (
-	// "fmt"
+	"sync"
 	"testing"
 )
 
@@ -113,4 +113,49 @@ func TestConstructsArr(t *testing.T) {
 			t.Fatal("Unexpected values", v, "wanted len of", l, "index", i)
 		}
 	}
+}
+
+func TestConcurrency(t *testing.T) {
+	wg := sync.WaitGroup{}
+
+	r := Ring{}
+	r.SetCapacity(128)
+
+	for i := 0; i < 2048; i++ {
+		wg.Add(1)
+		go func(i int) {
+			for x := 0; x < 100; x++ {
+				r.Enqueue(x)
+			}
+
+			if i%10 == 0 {
+				r.ContentSize()
+			}
+
+			if (i+1)%10 == 0 {
+				r.Capacity()
+			}
+
+			if (i+2)%10 == 0 {
+				r.Peek()
+			}
+
+			if (i+3)%10 == 0 {
+				r.Values()
+			}
+
+			if i%10 == 0 {
+				r.SetCapacity(r.Capacity() + 1)
+			}
+
+			for x := 0; x < 125; x++ {
+				r.Dequeue()
+			}
+
+			wg.Done()
+		}(i)
+
+	}
+
+	wg.Wait()
 }
