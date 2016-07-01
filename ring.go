@@ -17,7 +17,17 @@ The default value of the Ring struct is a valid (empty) Ring buffer with capacit
 type Ring struct {
 	head int // the most recent value written
 	tail int // the least recent value written
+    count int  // number of items in the ring
 	buff []interface{}
+}
+
+/*
+Create new ring with initial capacity.
+*/
+func NewRing(size int) *Ring {
+	r := &Ring{}
+	r.SetCapacity(size)
+	return r
 }
 
 /*
@@ -36,6 +46,13 @@ func (r Ring) Capacity() int {
 }
 
 /*
+Return the current count of items in the ring buffer.
+*/
+func (r *Ring) Count() int {
+	return r.count
+}
+
+/*
 Enqueue a value into the Ring buffer.
 */
 func (r *Ring) Enqueue(i interface{}) {
@@ -45,6 +62,8 @@ func (r *Ring) Enqueue(i interface{}) {
 	r.head = r.mod(r.head + 1)
 	if old != -1 && r.head == r.tail {
 		r.tail = r.mod(r.tail + 1)
+	} else {
+		r.count++
 	}
 }
 
@@ -59,6 +78,7 @@ func (r *Ring) Dequeue() interface{} {
 		return nil
 	}
 	v := r.get(r.tail)
+	r.count--
 	if r.tail == r.head {
 		r.head = -1
 		r.tail = 0
