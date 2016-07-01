@@ -114,3 +114,90 @@ func TestConstructsArr(t *testing.T) {
 		}
 	}
 }
+
+func TestCount(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+	if r.Count() != 0 {
+		t.Fatal("Count on empty ring", r.Count(), "wanted count of", 0)
+	}
+	for i := 1; i < 11; i++ {
+		r.Enqueue(i)
+	}
+	if r.Count() != 10 {
+		t.Fatal("Count on ring with 10 enqueues", r.Count(), "wanted count of", 10)
+	}
+	for i := 1; i < 11; i++ {
+		_ = r.Dequeue()
+	}
+	if r.Count() != 0 {
+		t.Fatal("Count on ring with 10 dequeues", r.Count(), "wanted count of", 0)
+	}
+}
+
+func TestCountOverrun(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+
+	for i := 1; i < 16; i++ {
+		r.Enqueue(i)
+	}
+	if r.Count() != r.Capacity() {
+		t.Fatal("Count on ring with 15 enqueues", r.Count(), "wanted count of", r.Capacity())
+	}
+
+	for i := 1; i < 21; i++ {
+		r.Enqueue(i)
+	}
+	if r.Count() != r.Capacity() {
+		t.Fatal("Count on ring with 35 enqueues", r.Count(), "wanted count of", r.Capacity())
+	}
+
+	for i := 1; i < 11; i++ {
+		_ = r.Dequeue()
+	}
+	if r.Count() != 0 {
+		t.Fatal("Count on ring with 10 dequeues", r.Count(), "wanted count of", 0)
+	}
+
+}
+
+func TestCountOnEmpty(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+
+	_ = r.Dequeue()
+	if r.Count() != 0 {
+		t.Fatal("Count on empty ring after 1 dequeues", r.Count(), "wanted count of", 0)
+	}
+}
+
+func TestCountArr(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+
+	for i := 1; i < 6; i++ {
+		r.Enqueue(i)
+	}
+	slice := r.Values()
+	if r.Count() != len(slice) {
+		t.Fatal("Length of return Values() of ring", len(slice), "wanted count of", r.Count())
+	}
+
+	for i := 1; i < 11; i++ {
+		r.Enqueue(i)
+	}
+	slice = r.Values()
+	if r.Count() != len(slice) {
+		t.Fatal("Length of return Values() of ring", len(slice), "wanted count of", r.Count())
+	}
+	
+	for i := 11; i < 21; i++ {
+		r.Enqueue(i)
+	}
+	slice = r.Values()
+	if r.Count() != len(slice) {
+		t.Fatal("Length of return Values() of ring", len(slice), "wanted count of", r.Count())
+	}
+}
+
