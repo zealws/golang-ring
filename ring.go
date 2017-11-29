@@ -3,6 +3,8 @@ Package ring provides a simple implementation of a ring buffer.
 */
 package ring
 
+import "math"
+
 /*
 The DefaultCapacity of an uninitialized Ring buffer.
 
@@ -17,7 +19,7 @@ The default value of the Ring struct is a valid (empty) Ring buffer with capacit
 type Ring struct {
 	head int // the most recent value written
 	tail int // the least recent value written
-	buff []interface{}
+	buff []float64
 }
 
 /*
@@ -38,7 +40,7 @@ func (r Ring) Capacity() int {
 /*
 Enqueue a value into the Ring buffer.
 */
-func (r *Ring) Enqueue(i interface{}) {
+func (r *Ring) Enqueue(i float64) {
 	r.checkInit()
 	r.set(r.head+1, i)
 	old := r.head
@@ -51,12 +53,12 @@ func (r *Ring) Enqueue(i interface{}) {
 /*
 Dequeue a value from the Ring buffer.
 
-Returns nil if the ring buffer is empty.
+Returns NaN if the ring buffer is empty.
 */
-func (r *Ring) Dequeue() interface{} {
+func (r *Ring) Dequeue() float64 {
 	r.checkInit()
 	if r.head == -1 {
-		return nil
+		return math.NaN()
 	}
 	v := r.get(r.tail)
 	if r.tail == r.head {
@@ -71,12 +73,12 @@ func (r *Ring) Dequeue() interface{} {
 /*
 Read the value that Dequeue would have dequeued without actually dequeuing it.
 
-Returns nil if the ring buffer is empty.
+Returns NaN if the ring buffer is empty.
 */
-func (r *Ring) Peek() interface{} {
+func (r *Ring) Peek() float64 {
 	r.checkInit()
 	if r.head == -1 {
-		return nil
+		return math.NaN()
 	}
 	return r.get(r.tail)
 }
@@ -86,11 +88,11 @@ Values returns a slice of all the values in the circular buffer without modifyin
 The returned slice can be modified independently of the circular buffer. However, the values inside the slice
 are shared between the slice and circular buffer.
 */
-func (r *Ring) Values() []interface{} {
+func (r *Ring) Values() []float64 {
 	if r.head == -1 {
-		return []interface{}{}
+		return []float64{}
 	}
-	arr := make([]interface{}, 0, r.Capacity())
+	arr := make([]float64, 0, r.Capacity())
 	for i := 0; i < r.Capacity(); i++ {
 		idx := r.mod(i + r.tail)
 		arr = append(arr, r.get(idx))
@@ -106,12 +108,12 @@ func (r *Ring) Values() []interface{} {
 **/
 
 // sets a value at the given unmodified index and returns the modified index of the value
-func (r *Ring) set(p int, v interface{}) {
+func (r *Ring) set(p int, v float64) {
 	r.buff[r.mod(p)] = v
 }
 
 // gets a value based at a given unmodified index
-func (r *Ring) get(p int) interface{} {
+func (r *Ring) get(p int) float64 {
 	return r.buff[r.mod(p)]
 }
 
@@ -122,9 +124,9 @@ func (r *Ring) mod(p int) int {
 
 func (r *Ring) checkInit() {
 	if r.buff == nil {
-		r.buff = make([]interface{}, DefaultCapacity)
+		r.buff = make([]float64, DefaultCapacity)
 		for i := range r.buff {
-			r.buff[i] = nil
+			r.buff[i] = math.NaN()
 		}
 		r.head, r.tail = -1, 0
 	}
@@ -136,9 +138,9 @@ func (r *Ring) extend(size int) {
 	} else if size < len(r.buff) {
 		r.buff = r.buff[0:size]
 	}
-	newb := make([]interface{}, size-len(r.buff))
+	newb := make([]float64, size-len(r.buff))
 	for i := range newb {
-		newb[i] = nil
+		newb[i] = math.NaN()
 	}
 	r.buff = append(r.buff, newb...)
 }
