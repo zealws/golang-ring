@@ -36,7 +36,7 @@ Capacity returns the current capacity of the ring buffer.
 #### func (*Ring) Dequeue
 
 ```go
-func (r *Ring) Dequeue() interface{}
+func (r *Ring) Dequeue() float64
 ```
 Dequeue a value from the Ring buffer.
 
@@ -45,14 +45,14 @@ Returns nil if the ring buffer is empty.
 #### func (*Ring) Enqueue
 
 ```go
-func (r *Ring) Enqueue(i interface{})
+func (r *Ring) Enqueue(i float64)
 ```
 Enqueue a value into the Ring buffer.
 
 #### func (*Ring) Peek
 
 ```go
-func (r *Ring) Peek() interface{}
+func (r *Ring) Peek() float64
 ```
 Read the value that Dequeue would have dequeued without actually dequeuing it.
 
@@ -68,7 +68,7 @@ Set the maximum size of the ring buffer.
 #### func (*Ring) Values
 
 ```go
-func (r *Ring) Values() []interface{}
+func (r *Ring) Values() []float64
 ```
 Values returns a slice of all the values in the circular buffer without
 modifying them at all. The returned slice can be modified independently of the

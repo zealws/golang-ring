@@ -16,10 +16,10 @@ func TestSetsSize(t *testing.T) {
 func TestSavesSomeData(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
-	for i := 0; i < 7; i++ {
+	for i := 0.0; i < 7.0; i++ {
 		r.Enqueue(i)
 	}
-	for i := 0; i < 7; i++ {
+	for i := 0.0; i < 7.0; i++ {
 		x := r.Dequeue()
 		if x != i {
 			t.Fatal("Unexpected response", x, "wanted", i)
@@ -30,16 +30,16 @@ func TestSavesSomeData(t *testing.T) {
 func TestReusesBuffer(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
-	for i := 0; i < 7; i++ {
+	for i := 0.0; i < 7.0; i++ {
 		r.Enqueue(i)
 	}
-	for i := 0; i < 7; i++ {
+	for i := 0.0; i < 7.0; i++ {
 		r.Dequeue()
 	}
-	for i := 7; i < 14; i++ {
+	for i := 7.0; i < 14.0; i++ {
 		r.Enqueue(i)
 	}
-	for i := 7; i < 14; i++ {
+	for i := 7.0; i < 14.0; i++ {
 		x := r.Dequeue()
 		if x != i {
 			t.Fatal("Unexpected response", x, "wanted", i)
@@ -50,10 +50,10 @@ func TestReusesBuffer(t *testing.T) {
 func TestOverflowsBuffer(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
-	for i := 0; i < 20; i++ {
+	for i := 0.0; i < 20.0; i++ {
 		r.Enqueue(i)
 	}
-	for i := 10; i < 20; i++ {
+	for i := 10.0; i < 20.0; i++ {
 		x := r.Dequeue()
 		if x != i {
 			t.Fatal("Unexpected response", x, "wanted", i)
@@ -64,10 +64,10 @@ func TestOverflowsBuffer(t *testing.T) {
 func TestPartiallyOverflows(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
-	for i := 0; i < 15; i++ {
+	for i := 0.0; i < 15.0; i++ {
 		r.Enqueue(i)
 	}
-	for i := 5; i < 15; i++ {
+	for i := 5.0; i < 15.0; i++ {
 		x := r.Dequeue()
 		if x != i {
 			t.Fatal("Unexpected response", x, "wanted", i)
@@ -78,10 +78,10 @@ func TestPartiallyOverflows(t *testing.T) {
 func TestPeeks(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
-	for i := 0; i < 10; i++ {
+	for i := 0.0; i < 10.0; i++ {
 		r.Enqueue(i)
 	}
-	for i := 0; i < 10; i++ {
+	for i := 0.0; i < 10.0; i++ {
 		r.Peek()
 		r.Peek()
 		x1 := r.Peek()
@@ -103,7 +103,7 @@ func TestConstructsArr(t *testing.T) {
 		t.Fatal("Unexpected values", v, "wanted len of", 0)
 	}
 	for i := 1; i < 21; i++ {
-		r.Enqueue(i)
+		r.Enqueue(float64(i))
 		l := i
 		if l > 10 {
 			l = 10
