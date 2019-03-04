@@ -115,6 +115,35 @@ func TestConstructsArr(t *testing.T) {
 	}
 }
 
+func TestContentSize(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+
+	for i := 1; i < 10; i++ {
+		r.Enqueue(i)
+		s := r.ContentSize()
+		if s != i {
+			t.Fatal("Unexpected content size", s, "wanted", i)
+		}
+	}
+
+	for i := 1; i < 5; i++ {
+		r.Enqueue(i)
+		s := r.ContentSize()
+		if s != 10 {
+			t.Fatal("Unexpected content size", s, "wanted 10")
+		}
+	}
+
+	for i := 9; i > 0; i-- {
+		r.Dequeue()
+		s := r.ContentSize()
+		if s != i {
+			t.Fatal("Unexpected content size", s, "wanted", i)
+		}
+	}
+}
+
 func TestConcurrency(t *testing.T) {
 	wg := sync.WaitGroup{}
 
