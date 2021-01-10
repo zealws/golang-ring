@@ -27,47 +27,6 @@ func TestSavesSomeData(t *testing.T) {
 	}
 }
 
-func TestCapacity(t *testing.T) {
-	r := Ring{}
-	r.SetCapacity(10)
-	for i := 0; i < 7; i++ {
-		r.Enqueue(i)
-	}
-	r.SetCapacity(11)
-	for i := 7; i < 11; i++ {
-		r.Enqueue(i)
-	}
-	for i := 0; i < 11; i++ {
-		x := r.Dequeue()
-		if x != i {
-			t.Fatal("Unexpected response", x, "wanted", i)
-		}
-	}
-}
-
-func TestCapacityWithOverflow(t *testing.T) {
-	r := Ring{}
-	r.SetCapacity(5)
-	for i := 0; i < 7; i++ {
-		r.Enqueue(i)
-	}
-
-	r.SetCapacity(9)
-
-	for i := 2; i < 5; i++ {
-		x := r.Dequeue()
-		if x != i {
-			t.Fatal("Unexpected response", x, "wanted", i)
-		}
-	}
-	for i := 5; i < 7; i++ {
-		x := r.Dequeue()
-		if x != i {
-			t.Fatal("Unexpected response", x, "wanted", i)
-		}
-	}
-}
-
 func TestReusesBuffer(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
