@@ -185,24 +185,5 @@ func (r *Ring) extend(size int) {
 	for i := range newb {
 		newb[i] = nil
 	}
-	if r.head >= r.tail {
-		r.buff = append(r.buff, newb...)
-	} else {
-		if r.head == -1 {
-			r.buff = append(r.buff, newb...)
-		} else {
-			part1 := make([]interface{}, len(r.buff[:r.head+1]))
-			copy(part1, r.buff[:r.head+1])
-			part2 := make([]interface{}, len(r.buff[r.tail:]))
-			copy(part2, r.buff[r.tail:])
-			r.buff = append(r.buff, newb...)
-			r.tail = r.mod(r.tail + len(newb))
-			copy(r.buff[:r.head+1], part1)
-			copy(r.buff[r.head+1:r.tail], newb)
-			copy(r.buff[r.tail:], part2)
-
-		}
-
-	}
-
+	r.buff = append(r.buff, newb...)
 }
