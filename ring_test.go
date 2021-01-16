@@ -27,6 +27,72 @@ func TestSavesSomeData(t *testing.T) {
 	}
 }
 
+func TestCapacity(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+	for i := 0; i < 7; i++ {
+		r.Enqueue(i)
+	}
+	r.SetCapacity(11)
+	for i := 7; i < 11; i++ {
+		r.Enqueue(i)
+	}
+	for i := 0; i < 11; i++ {
+		x := r.Dequeue()
+		if x != i {
+			t.Fatal("Unexpected response", x, "wanted", i)
+		}
+	}
+}
+
+func TestReducedCapacity(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+	for i := 0; i < 13; i++ {
+		r.Enqueue(i)
+	}
+
+	for _, i := range []int{3, 4, 5, 6} {
+		x := r.Dequeue()
+		if x != i {
+			t.Fatal("Unexpected response", x, "wanted", i)
+		}
+	}
+
+	r.SetCapacity(5)
+
+	// note that the value 7 gets left behind by SetCapacity
+	for _, i := range []int{8, 9, 10, 11, 12} {
+		x := r.Dequeue()
+		if x != i {
+			t.Fatal("Unexpected response", x, "wanted", i)
+		}
+	}
+}
+
+func TestCapacityWithOverflow(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(5)
+	for i := 0; i < 7; i++ {
+		r.Enqueue(i)
+	}
+
+	r.SetCapacity(9)
+
+	for i := 2; i < 5; i++ {
+		x := r.Dequeue()
+		if x != i {
+			t.Fatal("Unexpected response", x, "wanted", i)
+		}
+	}
+	for i := 5; i < 7; i++ {
+		x := r.Dequeue()
+		if x != i {
+			t.Fatal("Unexpected response", x, "wanted", i)
+		}
+	}
+}
+
 func TestReusesBuffer(t *testing.T) {
 	r := Ring{}
 	r.SetCapacity(10)
@@ -187,4 +253,28 @@ func TestConcurrency(t *testing.T) {
 	}
 
 	wg.Wait()
+}
+
+func TestMod(t *testing.T) {
+	r := Ring{}
+	r.SetCapacity(10)
+
+	values := [][]int{
+		// {input, expected_output} ...
+		{-5, 5},
+		{-2, 8},
+		{-1, 9},
+		{0, 0},
+		{9, 9},
+		{10, 0},
+		{11, 1},
+		{7728461, 1},
+		{12345678, 8},
+	}
+
+	for _, v := range values {
+		if a := r.mod(v[0]); a != v[1] {
+			t.Error("Unexpected mod index", a, "expected", v[1])
+		}
+	}
 }
